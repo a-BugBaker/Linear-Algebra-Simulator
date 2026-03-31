@@ -251,8 +251,12 @@ export default function VectorEssence() {
 
       updateArrow(objs.arrowV, vectorV);
       const combo = vecAdd(vecScale(spanA, vectorU), vecScale(spanB, vectorV));
-      const comboSafe = combo.map(x => x === 0 ? 0.001 : x);
-      updateArrow(objs.arrowResult, comboSafe);
+      if (vecNorm(combo) < 0.001) {
+        objs.arrowResult.visible = false;
+      } else {
+        objs.arrowResult.visible = true;
+        updateArrow(objs.arrowResult, combo);
+      }
       objs.arrowResult.setColor(new THREE.Color(COLORS.highlight));
 
       spanPoints.current.push(...combo);
